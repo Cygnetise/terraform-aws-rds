@@ -75,13 +75,27 @@ resource "aws_db_instance" "default" {
   performance_insights_enabled          = var.performance_insights_enabled
   performance_insights_kms_key_id       = var.performance_insights_enabled ? var.performance_insights_kms_key_id : null
   performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period : null
+
+
+ depends_on = [
+    aws_db_subnet_group.default,
+    aws_security_group.default,
+    aws_db_parameter_group.default,
+    aws_db_option_group.default
+  ]
+
+  lifecycle {
+    ignore_changes = [
+      snapshot_identifier, # if created from a snapshot, will be non-null at creation, but null afterwards
+    ]
+  }
 }
 
 resource "aws_db_parameter_group" "default" {
-  count  = length(var.parameter_group_name) == 0 && var.enabled ? 1 : 0
-  name   = module.label.id
-  family = var.db_parameter_group
-  tags   = module.label.tags
+  count       = length(var.parameter_group_name) == 0 && var.enabled ? 1 : 0
+  name_prefix = "${module.label.id}${module.label.delimiter}"
+  family      = var.db_parameter_group
+  tags        = module.label.tags
 
   dynamic "parameter" {
     for_each = var.db_parameter
@@ -91,11 +105,15 @@ resource "aws_db_parameter_group" "default" {
       value        = parameter.value.value
     }
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_db_option_group" "default" {
   count                = length(var.option_group_name) == 0 && var.enabled ? 1 : 0
-  name                 = module.label.id
+  name_prefix          = "${module.label.id}${module.label.delimiter}"
   engine_name          = var.engine
   major_engine_version = local.major_engine_version
   tags                 = module.label.tags
