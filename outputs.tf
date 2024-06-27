@@ -37,3 +37,8 @@ output "option_group_id" {
   value       = join("", aws_db_option_group.default.*.id)
   description = "ID of the Option Group"
 }
+
+output "master_user_secret" {
+  value       = one(aws_db_instance.default[*].master_user_secret)
+  description = "Secret object if configured with `var.database_manage_master_user_password = true`."
+}
