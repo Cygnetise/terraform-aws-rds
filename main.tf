@@ -37,7 +37,6 @@ resource "aws_db_instance" "default" {
   engine_version        = var.engine_version
   instance_class        = var.instance_class
   manage_master_user_password = true
-  master_user_secret_kms_key_id = var.kms_key_arn
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
   storage_encrypted     = var.storage_encrypted
