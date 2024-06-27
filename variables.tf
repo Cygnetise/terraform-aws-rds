@@ -87,12 +87,6 @@ variable "database_user" {
   description = "(Required unless a `snapshot_identifier` or `replicate_source_db` is provided) Username for the master DB user"
 }
 
-variable "database_password" {
-  type        = string
-  default     = ""
-  description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
-}
-
 variable "database_port" {
   type        = number
   description = "Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`"
