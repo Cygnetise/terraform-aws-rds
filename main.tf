@@ -30,7 +30,7 @@ locals {
 resource "aws_db_instance" "default" {
   count                 = var.enabled ? 1 : 0
   identifier            = module.label.id
-  name                  = var.database_name
+  db_name               = var.database_name
   username              = var.database_user
   port                  = var.database_port
   engine                = var.engine
