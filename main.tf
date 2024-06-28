@@ -32,7 +32,7 @@ resource "aws_db_instance" "default" {
   identifier            = module.label.id
   db_name               = var.database_name
   username              = var.database_user
-  password              = var.database_user
+  password              = var.database_password
   port                  = var.database_port
   engine                = var.engine
   engine_version        = var.engine_version
