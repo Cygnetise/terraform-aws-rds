@@ -93,6 +93,12 @@ variable "database_password" {
   description = "(Required unless a snapshot_identifier or replicate_source_db is provided) Password for the master DB user"
 }
 
+variable "database_manage_master_user_password" {
+  type        = bool
+  default     = false
+  description = "Set to true to allow RDS to manage the master user password in Secrets Manager. Ignore if `database_password` is provided."
+}
+
 variable "database_port" {
   type        = number
   description = "Database port (_e.g._ `3306` for `MySQL`). Used in the DB Security Group to allow access to the DB instance from the provided `security_group_ids`"
