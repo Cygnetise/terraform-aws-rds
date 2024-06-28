@@ -39,6 +39,6 @@ output "option_group_id" {
 }
 
 output "master_user_secret" {
-  value       = one(aws_db_instance.default[*].master_user_secret)
+  value       = length(aws_db_instance.default) == 0 ? null : aws_db_instance.default[0].master_user_secret
   description = "Secret object if configured with `var.database_manage_master_user_password = true`."
 }
