@@ -32,15 +32,17 @@ resource "aws_db_instance" "default" {
   identifier            = module.label.id
   db_name               = var.database_name
   username              = var.database_user
+  password              = var.database_user
   port                  = var.database_port
   engine                = var.engine
   engine_version        = var.engine_version
   instance_class        = var.instance_class
-  manage_master_user_password = true
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_arn
+
+  manage_master_user_password   =  var.database_password != null ? null : var.database_manage_master_user_password
 
   vpc_security_group_ids = compact(
     concat(
